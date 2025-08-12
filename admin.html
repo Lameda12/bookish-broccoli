@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Wisdom Connect</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#f5f3ff',
+                            500: '#8b5cf6',
+                            600: '#7c3aed',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="bg-gray-50 font-sans">
+    <!-- Header -->
+    <header class="bg-white shadow-sm border-b">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h1 class="text-2xl font-bold text-gray-900">🎛️ Wisdom Connect Admin</h1>
+                    <p class="text-gray-600">Platform Management Dashboard</p>
+                </div>
+                <a href="/" class="bg-primary-600 text-white px-4 py-2 rounded-lg hover:bg-primary-700 transition-colors">
+                    ← Back to Platform
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        
+        <!-- Stats Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <div class="bg-white rounded-lg shadow p-6">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+                            <span class="text-blue-600 font-bold">👥</span>
+                        </div>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm font-medium text-gray-500">Total Experts</p>
+                        <p class="text-2xl font-semibold text-gray-900" id="totalExperts">-</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow p-6">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
+                            <span class="text-green-600 font-bold">📝</span>
+                        </div>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm font-medium text-gray-500">Applications</p>
+                        <p class="text-2xl font-semibold text-gray-900" id="totalApplications">-</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow p-6">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <div class="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center">
+                            <span class="text-purple-600 font-bold">🤝</span>
+                        </div>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm font-medium text-gray-500">Connections</p>
+                        <p class="text-2xl font-semibold text-gray-900" id="totalConnections">-</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow p-6">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <div class="w-8 h-8 bg-yellow-100 rounded-full flex items-center justify-center">
+                            <span class="text-yellow-600 font-bold">💬</span>
+                        </div>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm font-medium text-gray-500">Total Feedback</p>
+                        <p class="text-2xl font-semibold text-gray-900" id="totalFeedback">-</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tabs -->
+        <div class="bg-white rounded-lg shadow">
+            <div class="border-b">
+                <nav class="-mb-px flex">
+                    <button class="tab-btn border-b-2 border-primary-500 text-primary-600 py-4 px-6 font-medium" onclick="switchTab('experts')" data-tab="experts">
+                        Active Experts
+                    </button>
+                    <button class="tab-btn border-b-2 border-transparent text-gray-500 hover:text-gray-700 py-4 px-6 font-medium" onclick="switchTab('applications')" data-tab="applications">
+                        Applications
+                    </button>
+                    <button class="tab-btn border-b-2 border-transparent text-gray-500 hover:text-gray-700 py-4 px-6 font-medium" onclick="switchTab('feedback')" data-tab="feedback">
+                        Feedback
+                    </button>
+                    <button class="tab-btn border-b-2 border-transparent text-gray-500 hover:text-gray-700 py-4 px-6 font-medium" onclick="switchTab('connections')" data-tab="connections">
+                        Connections
+                    </button>
+                </nav>
+            </div>
+
+            <!-- Tab Content -->
+            <div class="p-6">
+                <!-- Experts Tab -->
+                <div id="experts-tab" class="tab-content">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-lg font-semibold text-gray-900">Active Experts</h2>
+                        <button onclick="refreshData()" class="text-primary-600 hover:text-primary-700">
+                            🔄 Refresh
+                        </button>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Expert</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Industry</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Rate</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Rating</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Joined</th>
+                                </tr>
+                            </thead>
+                            <tbody id="expertsTable" class="bg-white divide-y divide-gray-200">
+                                <!-- Dynamic content -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Applications Tab -->
+                <div id="applications-tab" class="tab-content hidden">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-lg font-semibold text-gray-900">Expert Applications</h2>
+                        <button onclick="refreshData()" class="text-primary-600 hover:text-primary-700">
+                            🔄 Refresh
+                        </button>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Applicant</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Industry</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Experience</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Rate</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="applicationsTable" class="bg-white divide-y divide-gray-200">
+                                <!-- Dynamic content -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Feedback Tab -->
+                <div id="feedback-tab" class="tab-content hidden">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        <!-- Client Feedback -->
+                        <div>
+                            <h3 class="text-lg font-semibold text-gray-900 mb-4">Client Feedback</h3>
+                            <div class="space-y-4" id="clientFeedbackList">
+                                <!-- Dynamic content -->
+                            </div>
+                        </div>
+                        
+                        <!-- Expert Feedback -->
+                        <div>
+                            <h3 class="text-lg font-semibold text-gray-900 mb-4">Expert Feedback</h3>
+                            <div class="space-y-4" id="expertFeedbackList">
+                                <!-- Dynamic content -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Connections Tab -->
+                <div id="connections-tab" class="tab-content hidden">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-lg font-semibold text-gray-900">Expert Connections</h2>
+                        <button onclick="refreshData()" class="text-primary-600 hover:text-primary-700">
+                            🔄 Refresh
+                        </button>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Connection ID</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Expert</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                                </tr>
+                            </thead>
+                            <tbody id="connectionsTable" class="bg-white divide-y divide-gray-200">
+                                <!-- Dynamic content -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentTab = 'experts';
+
+        // Initialize dashboard
+        window.addEventListener('DOMContentLoaded', function() {
+            refreshData();
+        });
+
+        // Switch between tabs
+        function switchTab(tabName) {
+            currentTab = tabName;
+            
+            // Update tab buttons
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('border-primary-500', 'text-primary-600');
+                btn.classList.add('border-transparent', 'text-gray-500');
+            });
+            
+            document.querySelector(`[data-tab="${tabName}"]`).classList.remove('border-transparent', 'text-gray-500');
+            document.querySelector(`[data-tab="${tabName}"]`).classList.add('border-primary-500', 'text-primary-600');
+            
+            // Update tab content
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.add('hidden');
+            });
+            
+            document.getElementById(`${tabName}-tab`).classList.remove('hidden');
+        }
+
+        // Refresh all data
+        async function refreshData() {
+            await Promise.all([
+                loadStats(),
+                loadExperts(),
+                loadApplications(),
+                loadFeedback(),
+                loadConnections()
+            ]);
+        }
+
+        // Load platform stats
+        async function loadStats() {
+            try {
+                const response = await fetch('/api/stats');
+                const result = await response.json();
+                
+                if (result.success) {
+                    document.getElementById('totalExperts').textContent = result.stats.totalExperts;
+                    document.getElementById('totalApplications').textContent = result.stats.totalApplications;
+                    document.getElementById('totalConnections').textContent = result.stats.totalConnections;
+                    document.getElementById('totalFeedback').textContent = result.stats.totalFeedback;
+                }
+            } catch (error) {
+                console.error('Error loading stats:', error);
+            }
+        }
+
+        // Load experts
+        async function loadExperts() {
+            try {
+                const response = await fetch('/api/experts');
+                const result = await response.json();
+                
+                if (result.success) {
+                    const tbody = document.getElementById('expertsTable');
+                    tbody.innerHTML = result.experts.map(expert => `
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center">
+                                    <div class="text-2xl mr-3">${expert.avatar}</div>
+                                    <div>
+                                        <div class="text-sm font-medium text-gray-900">${expert.name}</div>
+                                        <div class="text-sm text-gray-500">${expert.title || expert.experience}</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${expert.industry}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">$${expert.price.toLocaleString()}/day</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${expert.rating} ⭐ (${expert.reviews})</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${new Date(expert.joinedDate).toLocaleDateString()}</td>
+                        </tr>
+                    `).join('');
+                }
+            } catch (error) {
+                console.error('Error loading experts:', error);
+            }
+        }
+
+        // Load applications
+        async function loadApplications() {
+            try {
+                const response = await fetch('/api/admin/applications');
+                const result = await response.json();
+                
+                if (result.success) {
+                    const tbody = document.getElementById('applicationsTable');
+                    tbody.innerHTML = result.applications.map(app => `
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm font-medium text-gray-900">${app.name}</div>
+                                <div class="text-sm text-gray-500">${app.title}</div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${app.industry}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${app.experience}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">$${parseInt(app.rate).toLocaleString()}/day</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
+                                    app.status === 'approved' ? 'bg-green-100 text-green-800' : 
+                                    app.status === 'rejected' ? 'bg-red-100 text-red-800' : 
+                                    'bg-yellow-100 text-yellow-800'
+                                }">
+                                    ${app.status}
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                ${app.status === 'pending' ? 
+                                    `<button onclick="approveApplication(${app.id})" class="text-green-600 hover:text-green-800 mr-2">✅ Approve</button>` :
+                                    `<span class="text-gray-400">Processed</span>`
+                                }
+                            </td>
+                        </tr>
+                    `).join('');
+                }
+            } catch (error) {
+                console.error('Error loading applications:', error);
+            }
+        }
+
+        // Load feedback
+        async function loadFeedback() {
+            try {
+                const response = await fetch('/api/admin/feedback');
+                const result = await response.json();
+                
+                if (result.success) {
+                    // Client feedback
+                    const clientList = document.getElementById('clientFeedbackList');
+                    clientList.innerHTML = result.clientFeedback.map(feedback => `
+                        <div class="bg-gray-50 p-4 rounded-lg">
+                            <div class="flex items-center justify-between mb-2">
+                                <div class="flex">
+                                    ${Array(5).fill().map((_, i) => `<span class="text-yellow-400">${i < feedback.rating ? '★' : '☆'}</span>`).join('')}
+                                </div>
+                                <span class="text-sm text-gray-500">${new Date(feedback.timestamp).toLocaleString()}</span>
+                            </div>
+                            <p class="text-sm text-gray-700">${feedback.feedback || 'No comment'}</p>
+                            ${feedback.linkedin ? `<div class="text-xs text-blue-600 mt-1">LinkedIn: ${feedback.linkedin}</div>` : ''}
+                        </div>
+                    `).join('') || '<p class="text-gray-500">No client feedback yet</p>';
+
+                    // Expert feedback
+                    const expertList = document.getElementById('expertFeedbackList');
+                    expertList.innerHTML = result.expertFeedback.map(feedback => `
+                        <div class="bg-gray-50 p-4 rounded-lg">
+                            <div class="flex items-center justify-between mb-2">
+                                <div class="flex">
+                                    ${Array(5).fill().map((_, i) => `<span class="text-yellow-400">${i < feedback.rating ? '★' : '☆'}</span>`).join('')}
+                                </div>
+                                <span class="text-sm text-gray-500">${new Date(feedback.timestamp).toLocaleString()}</span>
+                            </div>
+                            <p class="text-sm text-gray-700 mb-1"><strong>Concerns:</strong> ${feedback.concerns || 'None'}</p>
+                            <p class="text-sm text-gray-700"><strong>Features:</strong> ${feedback.features || 'None'}</p>
+                        </div>
+                    `).join('') || '<p class="text-gray-500">No expert feedback yet</p>';
+                }
+            } catch (error) {
+                console.error('Error loading feedback:', error);
+            }
+        }
+
+        // Load connections
+        async function loadConnections() {
+            try {
+                // Note: We'd need to add this endpoint to the server
+                const response = await fetch('/api/admin/connections');
+                
+                if (response.status === 404) {
+                    // Endpoint doesn't exist yet, show placeholder
+                    document.getElementById('connectionsTable').innerHTML = `
+                        <tr>
+                            <td colspan="4" class="px-6 py-4 text-center text-gray-500">
+                                Connections data will be available soon
+                            </td>
+                        </tr>
+                    `;
+                    return;
+                }
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    const tbody = document.getElementById('connectionsTable');
+                    tbody.innerHTML = result.connections.map(conn => `
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-mono text-gray-900">${conn.connectionId}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${conn.expertName || `Expert #${conn.expertId}`}</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800">
+                                    ${conn.status}
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${new Date(conn.timestamp).toLocaleString()}</td>
+                        </tr>
+                    `).join('') || `
+                        <tr>
+                            <td colspan="4" class="px-6 py-4 text-center text-gray-500">
+                                No connections yet
+                            </td>
+                        </tr>
+                    `;
+                }
+            } catch (error) {
+                console.error('Error loading connections:', error);
+                document.getElementById('connectionsTable').innerHTML = `
+                    <tr>
+                        <td colspan="4" class="px-6 py-4 text-center text-gray-500">
+                            Error loading connections data
+                        </td>
+                    </tr>
+                `;
+            }
+        }
+
+        // Approve application
+        async function approveApplication(applicationId) {
+            try {
+                const response = await fetch(`/api/admin/applications/${applicationId}/approve`, {
+                    method: 'POST'
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    alert('✅ Application approved! New expert added to platform.');
+                    refreshData();
+                } else {
+                    alert('❌ Failed to approve application: ' + result.error);
+                }
+            } catch (error) {
+                console.error('Error approving application:', error);
+                alert('❌ Network error approving application');
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Connect with industry veterans. Expert consulting platform.">
+    <meta property="og:title" content="Wisdom Connect - Expert Consulting Platform">
+    <meta property="og:description" content="Test our revolutionary platform connecting companies with retired executives.">
+    <meta property="og:image" content="/og-image.jpg">
+    <meta property="og:url" content="https://wisdom-connect.railway.app">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Wisdom Connect - Expert Consulting Platform">
+    <meta name="twitter:description" content="Connect with industry veterans. Transform your business.">
+    <meta name="twitter:image" content="/og-image.jpg">
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#667eea">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Wisdom Connect">
+    <link rel="apple-touch-icon" href="/icon-192x192.png">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    
+    <title>Wisdom Connect - Live Beta</title>
+    
+    <!-- Tailwind CSS CDN with custom configuration -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    animation: {
+                        'gradient': 'gradient 8s linear infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                        'glow': 'glow 2s ease-in-out infinite alternate',
+                    },
+                    keyframes: {
+                        'gradient': {
+                            '0%, 100%': {
+                                'background-size': '200% 200%',
+                                'background-position': 'left center'
+                            },
+                            '50%': {
+                                'background-size': '200% 200%',
+                                'background-position': 'right center'
+                            }
+                        },
+                        'float': {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-10px)' }
+                        },
+                        'glow': {
+                            '0%': { boxShadow: '0 0 20px rgba(139, 92, 246, 0.3)' },
+                            '100%': { boxShadow: '0 0 30px rgba(139, 92, 246, 0.6)' }
+                        }
+                    },
+                    colors: {
+                        primary: {
+                            50: '#f5f3ff',
+                            100: '#ede9fe',
+                            500: '#8b5cf6',
+                            600: '#7c3aed',
+                            700: '#6d28d9',
+                            800: '#5b21b6',
+                            900: '#4c1d95',
+                        },
+                        accent: {
+                            400: '#06b6d4',
+                            500: '#0891b2',
+                            600: '#0e7490',
+                        },
+                        success: {
+                            400: '#34d399',
+                            500: '#10b981',
+                            600: '#059669',
+                        }
+                    },
+                    fontFamily: {
+                        'sans': ['Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+                    },
+                    backdropBlur: {
+                        xs: '2px',
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        .bg-cluely {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 25%, #f093fb 50%, #f5576c 75%, #4facfe 100%);
+            background-size: 400% 400%;
+            animation: gradient 8s ease infinite;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .glass-dark {
+            background: rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+    </style>
+    
+    <!-- Add Inter font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="bg-cluely min-h-screen font-sans text-white">
+    <!-- Beta Banner -->
+    <div class="glass-dark text-center py-4 px-6 font-medium fixed top-0 left-0 right-0 z-50 animate-glow">
+        <span class="bg-gradient-to-r from-primary-400 to-accent-400 bg-clip-text text-transparent font-semibold">
+            🚀 LIVE BETA - Experience the Future of Expert Consulting
+        </span>
+    </div>
+
+    <!-- Mode Switcher -->
+    <div class="fixed top-20 right-6 z-40 glass-card rounded-xl p-2 shadow-2xl">
+        <button class="mode-btn px-6 py-3 rounded-lg text-sm font-medium bg-gradient-to-r from-primary-500 to-primary-600 text-white transition-all duration-300 hover:scale-105" onclick="switchMode('client')">
+            👤 Find Expert
+        </button>
+        <button class="mode-btn px-6 py-3 rounded-lg text-sm font-medium text-white/70 hover:text-white transition-all duration-300" onclick="switchMode('expert')">
+            🎓 Become Expert
+        </button>
+    </div>
+    
+    <div class="container mx-auto px-6 py-12 max-w-6xl mt-16">
+        <!-- Client View -->
+        <div class="client-view" id="clientView">
+            <!-- Header -->
+            <div class="glass-card rounded-2xl p-12 text-center mb-12 animate-float shadow-2xl">
+                <div class="mb-8">
+                    <div class="inline-block px-6 py-2 bg-gradient-to-r from-yellow-400 to-orange-500 text-black font-bold rounded-full text-sm mb-4 animate-pulse">
+                        🚀 REVOLUTIONARY: World's First "Expert DNA" Platform
+                    </div>
+                </div>
+                <h1 class="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-white via-primary-200 to-accent-300 bg-clip-text text-transparent">
+                    🧠 Wisdom Connect
+                </h1>
+                <p class="text-3xl text-white/90 mb-4 font-light">Don't just hire experts. <span class="text-accent-400 font-bold">Think like them.</span></p>
+                <p class="text-xl text-white/80 mb-6">
+                    Experience decision-making patterns of industry legends through our AI-powered "Expert DNA" technology
+                </p>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-4xl mx-auto text-white/70">
+                    <div class="glass-dark p-4 rounded-xl">
+                        <div class="text-2xl mb-2">⚡</div>
+                        <div class="font-semibold">Instant Expert Mode</div>
+                        <div class="text-sm">Get expert insights in real-time</div>
+                    </div>
+                    <div class="glass-dark p-4 rounded-xl">
+                        <div class="text-2xl mb-2">🧬</div>
+                        <div class="font-semibold">Thinking Patterns</div>
+                        <div class="text-sm">Learn how top minds make decisions</div>
+                    </div>
+                    <div class="glass-dark p-4 rounded-xl">
+                        <div class="text-2xl mb-2">🎯</div>
+                        <div class="font-semibold">Personalized Growth</div>
+                        <div class="text-sm">Become an expert yourself</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Revolutionary AI Section -->
+            <div class="glass-card rounded-2xl p-10 mb-12 shadow-2xl border-2 border-yellow-400/30">
+                <div class="text-center mb-8">
+                    <div class="inline-block px-4 py-1 bg-yellow-400 text-black font-bold rounded-full text-xs mb-4">
+                        ✨ NEVER SEEN BEFORE
+                    </div>
+                    <h2 class="text-4xl font-bold text-white mb-4 bg-gradient-to-r from-yellow-300 to-orange-400 bg-clip-text text-transparent">
+                        🧬 Expert DNA Simulator
+                    </h2>
+                    <p class="text-white/80 text-lg mb-6">Experience how industry legends think and make decisions</p>
+                </div>
+
+                <!-- Revolutionary Feature Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                    <div class="glass-dark rounded-xl p-6 hover:scale-105 transition-all duration-300 cursor-pointer border border-green-400/30" onclick="activateExpertBrain()">
+                        <div class="text-center">
+                            <div class="text-4xl mb-3 animate-pulse">🧠</div>
+                            <h3 class="text-lg font-bold text-green-400 mb-2">AI Expert Brain</h3>
+                            <p class="text-white/70 text-sm mb-4">Get instant decisions using Elon Musk's thinking patterns</p>
+                            <div class="bg-gradient-to-r from-green-500 to-green-600 text-white px-4 py-2 rounded-lg font-medium hover:scale-105 transition-all">
+                                🚀 Try Now
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="glass-dark rounded-xl p-6 hover:scale-105 transition-all duration-300 cursor-pointer border border-purple-400/30" onclick="startDecisionCoaching()">
+                        <div class="text-center">
+                            <div class="text-4xl mb-3 animate-bounce">⚡</div>
+                            <h3 class="text-lg font-bold text-purple-400 mb-2">Live Decision Coach</h3>
+                            <p class="text-white/70 text-sm mb-4">Real-time guidance as you make critical choices</p>
+                            <div class="bg-gradient-to-r from-purple-500 to-purple-600 text-white px-4 py-2 rounded-lg font-medium hover:scale-105 transition-all">
+                                🎯 Start Session
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="glass-dark rounded-xl p-6 hover:scale-105 transition-all duration-300 cursor-pointer border border-blue-400/30" onclick="openExpertMode()">
+                        <div class="text-center">
+                            <div class="text-4xl mb-3">🎮</div>
+                            <h3 class="text-lg font-bold text-blue-400 mb-2">Expert Mode Training</h3>
+                            <p class="text-white/70 text-sm mb-4">Level up your decision-making skills like a game</p>
+                            <div class="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-4 py-2 rounded-lg font-medium hover:scale-105 transition-all">
+                                🎲 Play Now
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Live Demo Section -->
+                <div class="glass-dark rounded-xl p-6 mb-8 border border-orange-400/30">
+                    <h3 class="text-xl font-bold text-orange-400 mb-4 flex items-center">
+                        <span class="animate-pulse mr-2">🔴</span> LIVE: Expert Brain in Action
+                    </h3>
+                    <div class="bg-black/50 rounded-lg p-4 font-mono text-sm">
+                        <div class="text-green-400 mb-2">> Analyzing your situation...</div>
+                        <div class="text-white/80 mb-2">Based on Warren Buffett's investment patterns:</div>
+                        <div class="text-yellow-300 mb-2">💡 "Focus on companies with strong competitive moats"</div>
+                        <div class="text-blue-400 mb-2">📊 Risk Assessment: 23% (Low-Medium)</div>
+                        <div class="text-green-400">✅ Recommendation: Proceed with 40% allocation</div>
+                    </div>
+                    <div class="mt-4 text-center">
+                        <button class="bg-gradient-to-r from-orange-500 to-red-500 text-white px-6 py-3 rounded-lg font-bold hover:scale-105 transition-all animate-glow" onclick="tryLiveDemo()">
+                            🚀 Try This With Your Problem
+                        </button>
+                    </div>
+                </div>
+
+                <h2 class="text-3xl font-bold text-white text-center mb-10 bg-gradient-to-r from-primary-300 to-accent-300 bg-clip-text text-transparent">
+                    🔍 Or Browse Traditional Experts
+                </h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-10">
+                    <div class="space-y-3">
+                        <label class="block text-sm font-semibold text-white/90">Industry</label>
+                        <select id="industry-filter" class="w-full p-4 glass-dark rounded-xl text-white focus:ring-2 focus:ring-primary-500 outline-none transition-all duration-300">
+                            <option value="">All Industries</option>
+                            <option value="healthcare">Healthcare & Pharma</option>
+                            <option value="technology">Technology & Software</option>
+                            <option value="finance">Finance & Banking</option>
+                            <option value="manufacturing">Manufacturing & Engineering</option>
+                            <option value="consulting">Management Consulting</option>
+                        </select>
+                    </div>
+                    
+                    <div class="space-y-3">
+                        <label class="block text-sm font-semibold text-white/90">Experience Level</label>
+                        <select id="experience-filter" class="w-full p-4 glass-dark rounded-xl text-white focus:ring-2 focus:ring-primary-500 outline-none transition-all duration-300">
+                            <option value="">Any Experience</option>
+                            <option value="senior">15-25 years</option>
+                            <option value="executive">25-35 years</option>
+                            <option value="veteran">35+ years</option>
+                        </select>
+                    </div>
+                    
+                    <div class="space-y-3">
+                        <label class="block text-sm font-semibold text-white/90">Budget Range</label>
+                        <select id="budget-filter" class="w-full p-4 glass-dark rounded-xl text-white focus:ring-2 focus:ring-primary-500 outline-none transition-all duration-300">
+                            <option value="">Any Budget</option>
+                            <option value="1000-2000">$1,000 - $2,000/day</option>
+                            <option value="2000-3000">$2,000 - $3,000/day</option>
+                            <option value="3000+">$3,000+/day</option>
+                        </select>
+                    </div>
+                    
+                    <div class="space-y-3">
+                        <label class="block text-sm font-semibold text-white/90">Search Keywords</label>
+                        <input type="text" id="keywords" placeholder="e.g. strategic planning..." 
+                               class="w-full p-4 glass-dark rounded-xl text-white placeholder-white/50 focus:ring-2 focus:ring-primary-500 outline-none transition-all duration-300">
+                    </div>
+                </div>
+
+                <button class="bg-gradient-to-r from-primary-500 to-accent-500 hover:from-primary-600 hover:to-accent-600 text-white font-semibold py-4 px-10 rounded-xl transition-all duration-300 hover:scale-105 hover:shadow-2xl mx-auto block animate-glow" onclick="searchExperts()">
+                    🎯 Find Experts
+                </button>
+            </div>
+
+            <!-- Experts Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12" id="expertsGrid"></div>
+
+            <!-- Revolutionary Pricing Section -->
+            <div class="glass-card rounded-2xl p-10 mb-12 shadow-2xl border-2 border-yellow-400/50">
+                <div class="text-center mb-8">
+                    <div class="inline-block px-4 py-1 bg-red-500 text-white font-bold rounded-full text-xs mb-4 animate-pulse">
+                        ⏰ LIMITED TIME: BETA PRICING
+                    </div>
+                    <h2 class="text-4xl font-bold text-white mb-4 bg-gradient-to-r from-yellow-300 to-orange-400 bg-clip-text text-transparent">
+                        🎯 Revolutionary Access
+                    </h2>
+                    <p class="text-white/80 text-lg mb-6">This changes everything. Be among the first to think like legends.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                    <!-- Traditional Consulting -->
+                    <div class="glass-dark rounded-xl p-6 border border-gray-400/30">
+                        <div class="text-center">
+                            <div class="text-2xl mb-3">📞</div>
+                            <h3 class="text-lg font-bold text-gray-400 mb-4">Traditional Consulting</h3>
+                            <div class="text-3xl font-bold text-gray-400 mb-2">$5,000</div>
+                            <div class="text-white/60 text-sm mb-6">Per day, limited availability</div>
+                            <ul class="text-left text-white/70 text-sm space-y-2 mb-6">
+                                <li>• 1-2 hour sessions</li>
+                                <li>• Schedule weeks ahead</li>
+                                <li>• Generic advice</li>
+                                <li>• No follow-up support</li>
+                            </ul>
+                            <div class="bg-gray-700 text-gray-300 py-3 px-4 rounded-lg font-medium">
+                                Old Way
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Expert DNA Platform -->
+                    <div class="glass-dark rounded-xl p-6 border-4 border-yellow-400/50 relative transform scale-105">
+                        <div class="absolute -top-3 left-1/2 transform -translate-x-1/2">
+                            <div class="bg-yellow-400 text-black px-4 py-1 rounded-full text-xs font-bold">
+                                🚀 REVOLUTIONARY
+                            </div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-3xl mb-3 animate-pulse">🧬</div>
+                            <h3 class="text-xl font-bold text-yellow-400 mb-4">Expert DNA Access</h3>
+                            <div class="text-4xl font-bold text-yellow-400 mb-2">$97</div>
+                            <div class="text-white/80 text-sm mb-6">Per month, unlimited access</div>
+                            <ul class="text-left text-white/90 text-sm space-y-2 mb-6">
+                                <li>• 🧠 24/7 AI Expert Brain</li>
+                                <li>• ⚡ Live Decision Coaching</li>
+                                <li>• 🎮 Gamified Expert Training</li>
+                                <li>• 🎯 100+ Industry Legends</li>
+                                <li>• 📊 Personal Growth Analytics</li>
+                                <li>• 🔮 Future Scenario Planning</li>
+                            </ul>
+                            <button onclick="joinWaitlist()" class="w-full bg-gradient-to-r from-yellow-400 to-orange-500 text-black py-4 rounded-lg font-bold hover:scale-105 transition-all animate-glow">
+                                🎯 JOIN BETA WAITLIST
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Enterprise -->
+                    <div class="glass-dark rounded-xl p-6 border border-purple-400/30">
+                        <div class="text-center">
+                            <div class="text-2xl mb-3">🏢</div>
+                            <h3 class="text-lg font-bold text-purple-400 mb-4">Enterprise Teams</h3>
+                            <div class="text-3xl font-bold text-purple-400 mb-2">$497</div>
+                            <div class="text-white/60 text-sm mb-6">Per team/month</div>
+                            <ul class="text-left text-white/70 text-sm space-y-2 mb-6">
+                                <li>• Everything in Expert DNA</li>
+                                <li>• Team collaboration tools</li>
+                                <li>• Custom expert training</li>
+                                <li>• Advanced analytics</li>
+                                <li>• Priority support</li>
+                            </ul>
+                            <div class="bg-purple-600 hover:bg-purple-700 text-white py-3 px-4 rounded-lg font-medium transition-colors">
+                                Contact Sales
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Value Proposition -->
+                <div class="bg-gradient-to-r from-green-500/20 to-blue-500/20 p-6 rounded-xl border border-green-400/30 mb-6">
+                    <h3 class="text-xl font-bold text-green-400 mb-4 text-center">💡 Why This Changes Everything</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm">
+                        <div>
+                            <div class="text-white/90 font-semibold mb-2">🎯 Instead of guessing:</div>
+                            <div class="text-white/70">Make decisions with the confidence of industry legends</div>
+                        </div>
+                        <div>
+                            <div class="text-white/90 font-semibold mb-2">⚡ Instead of waiting:</div>
+                            <div class="text-white/70">Get instant expert insights 24/7, whenever you need them</div>
+                        </div>
+                        <div>
+                            <div class="text-white/90 font-semibold mb-2">🧬 Instead of generic advice:</div>
+                            <div class="text-white/70">Experience personalized thinking patterns of your industry's best</div>
+                        </div>
+                        <div>
+                            <div class="text-white/90 font-semibold mb-2">🎮 Instead of boring learning:</div>
+                            <div class="text-white/70">Level up your expertise through gamified scenarios</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="text-center">
+                    <div class="text-yellow-300 font-bold mb-2">🎁 Beta Launch Special</div>
+                    <div class="text-white/80 text-sm mb-4">First 1,000 users get lifetime 50% discount</div>
+                    <div class="text-red-400 text-sm font-medium">⏰ 23 hours remaining</div>
+                </div>
+            </div>
+
+            <!-- Client Feedback Section -->
+            <div class="glass-card rounded-2xl p-10 mb-12 shadow-2xl">
+                <h2 class="text-3xl font-bold text-white text-center mb-10 bg-gradient-to-r from-primary-300 to-accent-300 bg-clip-text text-transparent">
+                    💬 Help Us Perfect This Revolution
+                </h2>
+                <div class="max-w-2xl mx-auto space-y-8">
+                    <p class="text-center text-white/90 text-lg">
+                        How would you rate your experience so far?
+                    </p>
+                    
+                    <div class="flex justify-center gap-3" id="clientRating">
+                        <span class="rating-star text-4xl cursor-pointer text-white/30 hover:text-yellow-400 transition-all duration-300 hover:scale-125" onclick="setRating(1)">★</span>
+                        <span class="rating-star text-4xl cursor-pointer text-white/30 hover:text-yellow-400 transition-all duration-300 hover:scale-125" onclick="setRating(2)">★</span>
+                        <span class="rating-star text-4xl cursor-pointer text-white/30 hover:text-yellow-400 transition-all duration-300 hover:scale-125" onclick="setRating(3)">★</span>
+                        <span class="rating-star text-4xl cursor-pointer text-white/30 hover:text-yellow-400 transition-all duration-300 hover:scale-125" onclick="setRating(4)">★</span>
+                        <span class="rating-star text-4xl cursor-pointer text-white/30 hover:text-yellow-400 transition-all duration-300 hover:scale-125" onclick="setRating(5)">★</span>
+                    </div>
+
+                    <div class="space-y-3">
+                        <label class="block text-sm font-semibold text-white/90">What would make this platform better?</label>
+                        <textarea id="clientFeedback" placeholder="Your suggestions, concerns, or ideas..." rows="4" 
+                                  class="w-full p-4 glass-dark rounded-xl text-white placeholder-white/50 focus:ring-2 focus:ring-primary-500 outline-none resize-none transition-all duration-300"></textarea>
+                    </div>
+
+                    <div class="space-y-3">
+                        <label class="block text-sm font-semibold text-white/90">Your LinkedIn Profile (optional)</label>
+                        <input type="url" id="clientLinkedIn" placeholder="https://linkedin.com/in/your-profile" 
+                               class="w-full p-4 glass-dark rounded-xl text-white placeholder-white/50 focus:ring-2 focus:ring-primary-500 outline-none transition-all duration-300">
+                    </div>
+
+                    <button class="bg-gradient-to-r from-primary-500 to-accent-500 hover:from-primary-600 hover:to-accent-600 text-white font-semibold py-4 px-8 rounded-xl transition-all duration-300 hover:scale-105 hover:shadow-2xl w-full animate-glow" onclick="submitClientFeedback()">
+                        🚀 Submit Feedback
+                    </button>
+
+                    <div class="glass-card border-success-400/50 rounded-xl p-6 text-center hidden" id="clientSuccess">
+                        <h3 class="text-xl font-bold text-success-400 mb-3">🎉 Thank you!</h3>
+                        <p class="text-white/90">Your feedback helps us build something amazing. We'll keep you updated on our progress!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Expert View -->
+        <div class="expert-view hidden" id="expertView">
+            <!-- Header -->
+            <div class="glass-card rounded-2xl p-12 text-center mb-12 animate-float shadow-2xl">
+                <h1 class="text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-white via-primary-200 to-accent-300 bg-clip-text text-transparent">
+                    🎓 Expert Portal
+                </h1>
+                <p class="text-2xl text-white/90 mb-4 font-light">Share your expertise. Build your legacy. Earn premium rates.</p>
+                <p class="text-white/70 font-medium">
+                    💼 Join our exclusive network of industry veterans
+                </p>
+            </div>
+
+            <!-- Expert Dashboard -->
+            <div class="glass-card rounded-2xl p-10 mb-12 shadow-2xl">
+                <h2 class="text-3xl font-bold text-white text-center mb-10 bg-gradient-to-r from-primary-300 to-accent-300 bg-clip-text text-transparent">
+                    📊 Your Potential Impact
+                </h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+                    <div class="glass-dark rounded-xl p-8 text-center hover:scale-105 transition-all duration-300 animate-float">
+                        <div class="text-4xl font-bold text-primary-400 mb-3 animate-glow">
+                            $8.3T
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-2">Market Opportunity</h3>
+                        <p class="text-white/70">Untapped knowledge waiting to be shared</p>
+                    </div>
+                    
+                    <div class="glass-dark rounded-xl p-8 text-center hover:scale-105 transition-all duration-300 animate-float" style="animation-delay: 0.2s;">
+                        <div class="text-4xl font-bold text-accent-400 mb-3 animate-glow">
+                            $3,500
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-2">Average Daily Rate</h3>
+                        <p class="text-white/70">Premium pricing for premium expertise</p>
+                    </div>
+                    
+                    <div class="glass-dark rounded-xl p-8 text-center hover:scale-105 transition-all duration-300 animate-float" style="animation-delay: 0.4s;">
+                        <div class="text-4xl font-bold text-success-400 mb-3 animate-glow">
+                            47%
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-2">Flexible Schedule</h3>
+                        <p class="text-white/70">Work when and how you want</p>
+                    </div>
+                </div>
+
+                <!-- Expert Onboarding Form -->
+                <div class="glass-dark rounded-xl p-10">
+                    <h3 class="text-2xl font-bold text-white mb-8 bg-gradient-to-r from-primary-300 to-accent-300 bg-clip-text text-transparent">🚀 Join Our Expert Network</h3>
+                    
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
+                        <div class="space-y-8">
+                            <div class="space-y-3">
+                                <label class="block text-sm font-semibold text-white/90">Full Name</label>
+                                <input type="text" id="expertName" placeholder="Dr. Jane Smith" 
+                                       class="w-full p-4 glass-card rounded-xl text-white placeholder-white/50 focus:ring-2 focus:ring-primary-500 outline-none transition-all duration-300">
+                            </div>
+
+                            <div class="space-y-3">
+                                <label class="block text-sm font-semibold text-white/90">Professional Title</label>
+                                <input type="text" id="expertTitle" placeholder="Former VP of Engineering at Google" 
+                                       class="w-full p-4 glass-card rounded-xl text-white placeholder-white/50 focus:ring-2 focus:ring-primary-500 outline-none transition-all duration-300">
+                            </div>
+
+                            <div class="space-y-3">
+                                <label class="block text-sm font-semibold text-white/90">Years of Experience</label>
+                                <select id="expertExperience" class="w-full p-4 glass-card rounded-xl text-white focus:ring-2 focus:ring-primary-500 outline-none transition-all duration-300">
+                                    <option value="">Select experience level</option>
+                                    <option value="15-20">15-20 years</option>
+                                    <option value="20-30">20-30 years</option>
+                                    <option value="30+">30+ years</option>
+                                </select>
+                            </div>
+
+                            <div class="space-y-3">
+                                <label class="block text-sm font-semibold text-white/90">Primary Industry</label>
+                                <select id="expertIndustry" class="w-full p-4 glass-card rounded-xl text-white focus:ring-2 focus:ring-primary-500 outline-none transition-all duration-300">
+                                    <option value="">Select industry</option>
+                                    <option value="technology">Technology & Software</option>
+                                    <option value="healthcare">Healthcare & Pharma</option>
+                                    <option value="finance">Finance & Banking</option>
+                                    <option value="manufacturing">Manufacturing</option>
+                                    <option value="consulting">Management Consulting</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+
+                            <div class="space-y-3">
+                                <label class="block text-sm font-semibold text-white/90">LinkedIn Profile</label>
+                                <input type="url" id="expertLinkedIn" placeholder="https://linkedin.com/in/your-profile" 
+                                       class="w-full p-4 glass-card rounded-xl text-white placeholder-white/50 focus:ring-2 focus:ring-primary-500 outline-none transition-all duration-300">
+                            </div>
+                        </div>
+
+                        <div class="space-y-8">
+                            <div class="space-y-3">
+                                <label class="block text-sm font-semibold text-white/90">Key Skills</label>
+                                <div class="flex flex-wrap gap-3 mb-4" id="skillsDisplay">
+                                    <!-- Skills will be added here -->
+                                </div>
+                                <div class="flex gap-3">
+                                    <input type="text" id="skillInput" placeholder="Add a skill..." 
+                                           class="flex-1 p-4 glass-card rounded-xl text-white placeholder-white/50 focus:ring-2 focus:ring-primary-500 outline-none transition-all duration-300">
+                                    <button class="bg-gradient-to-r from-primary-500 to-accent-500 hover:from-primary-600 hover:to-accent-600 px-6 py-4 rounded-xl text-white font-medium transition-all duration-300 hover:scale-105" onclick="addSkill()">
+                                        Add
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="space-y-3">
+                                <label class="block text-sm font-semibold text-white/90">Desired Daily Rate (USD)</label>
+                                <input type="number" id="expertRate" placeholder="2500" min="1000" max="10000" 
+                                       class="w-full p-4 glass-card rounded-xl text-white placeholder-white/50 focus:ring-2 focus:ring-primary-500 outline-none transition-all duration-300">
+                            </div>
+
+                            <div class="space-y-3">
+                                <label class="block text-sm font-semibold text-white/90">Career Highlights</label>
+                                <textarea id="expertBio" rows="4" placeholder="Brief summary of your major achievements, companies worked at, successful projects..." 
+                                          class="w-full p-4 glass-card rounded-xl text-white placeholder-white/50 focus:ring-2 focus:ring-primary-500 outline-none resize-none transition-all duration-300"></textarea>
+                            </div>
+
+                            <div class="space-y-3">
+                                <label class="block text-sm font-semibold text-white/90">Availability</label>
+                                <select id="expertAvailability" class="w-full p-4 glass-card rounded-xl text-white focus:ring-2 focus:ring-primary-500 outline-none transition-all duration-300">
+                                    <option value="">Select availability</option>
+                                    <option value="full-time">Full-time consulting</option>
+                                    <option value="part-time">Part-time (2-3 days/week)</option>
+                                    <option value="project-based">Project-based only</option>
+                                    <option value="advisory">Advisory roles only</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button class="bg-gradient-to-r from-primary-500 to-accent-500 hover:from-primary-600 hover:to-accent-600 text-white font-semibold py-4 px-10 rounded-xl transition-all duration-300 hover:scale-105 hover:shadow-2xl block mx-auto mt-12 animate-glow" onclick="submitExpertApplication()">
+                        🎯 Apply to Join Network
+                    </button>
+
+                    <div class="glass-card border-success-400/50 rounded-xl p-6 text-center mt-8 hidden" id="expertSuccess">
+                        <h3 class="text-xl font-bold text-success-400 mb-3">🎉 Application Received!</h3>
+                        <p class="text-white/90">We'll review your profile and get back to you within 48 hours. Welcome to Wisdom Connect!</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Expert Feedback Section -->
+            <div class="glass-card rounded-2xl p-10 mb-12 shadow-2xl">
+                <h2 class="text-3xl font-bold text-white text-center mb-10 bg-gradient-to-r from-primary-300 to-accent-300 bg-clip-text text-transparent">
+                    💭 Shape the Expert Experience
+                </h2>
+                <div class="max-w-2xl mx-auto space-y-8">
+                    <p class="text-center text-white/90 text-lg">
+                        What features would make this platform perfect for experts like you?
+                    </p>
+                    
+                    <div class="flex justify-center gap-3" id="expertRating">
+                        <span class="rating-star text-4xl cursor-pointer text-white/30 hover:text-yellow-400 transition-all duration-300 hover:scale-125" onclick="setExpertRating(1)">★</span>
+                        <span class="rating-star text-4xl cursor-pointer text-white/30 hover:text-yellow-400 transition-all duration-300 hover:scale-125" onclick="setExpertRating(2)">★</span>
+                        <span class="rating-star text-4xl cursor-pointer text-white/30 hover:text-yellow-400 transition-all duration-300 hover:scale-125" onclick="setExpertRating(3)">★</span>
+                        <span class="rating-star text-4xl cursor-pointer text-white/30 hover:text-yellow-400 transition-all duration-300 hover:scale-125" onclick="setExpertRating(4)">★</span>
+                        <span class="rating-star text-4xl cursor-pointer text-white/30 hover:text-yellow-400 transition-all duration-300 hover:scale-125" onclick="setExpertRating(5)">★</span>
+                    </div>
+
+                    <div class="space-y-3">
+                        <label class="block text-sm font-semibold text-white/90">What concerns you most about expert consulting platforms?</label>
+                        <textarea id="expertConcerns" placeholder="Privacy, pricing, client quality, time commitment..." rows="3" 
+                                  class="w-full p-4 glass-dark rounded-xl text-white placeholder-white/50 focus:ring-2 focus:ring-primary-500 outline-none resize-none transition-all duration-300"></textarea>
+                    </div>
+
+                    <div class="space-y-3">
+                        <label class="block text-sm font-semibold text-white/90">What features are most important to you?</label>
+                        <textarea id="expertFeatures" placeholder="Screening process, flexible scheduling, payment protection..." rows="3" 
+                                  class="w-full p-4 glass-dark rounded-xl text-white placeholder-white/50 focus:ring-2 focus:ring-primary-500 outline-none resize-none transition-all duration-300"></textarea>
+                    </div>
+
+                    <button class="bg-gradient-to-r from-primary-500 to-accent-500 hover:from-primary-600 hover:to-accent-600 text-white font-semibold py-4 px-8 rounded-xl transition-all duration-300 hover:scale-105 hover:shadow-2xl w-full animate-glow" onclick="submitExpertFeedback()">
+                        🚀 Submit Expert Feedback
+                    </button>
+
+                    <div class="glass-card border-success-400/50 rounded-xl p-6 text-center mt-8 hidden" id="expertFeedbackSuccess">
+                        <h3 class="text-xl font-bold text-success-400 mb-3">🙏 Thank you!</h3>
+                        <p class="text-white/90">Your insights are invaluable. We're building this platform with experts like you in mind!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
