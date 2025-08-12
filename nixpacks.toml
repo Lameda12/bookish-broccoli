@@ -9,8 +9,10 @@ cmds = [
 ]
 
 [phases.build]
-# No separate build step for this app
-cmds = []
+# Explicitly skip build to avoid duplicate npm ci causing EBUSY on caches
+cmds = [
+  "echo 'Skipping build phase'"
+]
 
 [start]
 cmd = "npm start"
