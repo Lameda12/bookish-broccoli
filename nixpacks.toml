@@ -1,0 +1,21 @@
+[phases.setup]
+# Ensure a recent Node is available
+nixPkgs = ["nodejs_22"]
+
+[phases.install]
+# Single install step; omit dev deps in production
+cmds = [
+  "npm ci --omit=dev"
+]
+
+[phases.build]
+# No separate build step for this app
+cmds = []
+
+[start]
+cmd = "npm start"
+
+[variables]
+# Avoid any cache folder bind-mount conflicts
+NPM_CONFIG_CACHE = "/tmp/.npm"
+CI = "true"
